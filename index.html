@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="is">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Belfast 2026</title>
+    <style>
+        :root {
+            --primary: #15803d; 
+            --primary-dark: #166534;
+            --bg: #f0f2f5;
+            --card: #ffffff;
+            --text-dark: #111827;
+            --text-light: #4b5563;
+        }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            background-color: var(--bg); 
+            color: var(--text-dark); 
+            margin: 0; 
+            padding: 0; 
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+        header { 
+            background-color: var(--primary); 
+            color: white; 
+            position: sticky; 
+            top: 0; 
+            z-index: 100; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+        }
+        .header-title {
+            padding: 1rem;
+            text-align: center;
+        }
+        h1 { margin: 0; font-size: 1.3rem; font-weight: 800; letter-spacing: 0.5px; }
+        
+        .tabs {
+            display: flex;
+            overflow-x: auto;
+            scrollbar-width: none;
+            padding: 0 0.5rem 0.75rem 0.5rem;
+            gap: 8px;
+        }
+        .tabs::-webkit-scrollbar { display: none; }
+        
+        .tab {
+            background-color: var(--primary-dark);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .tab.active {
+            background-color: white;
+            color: var(--primary);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .container { padding: 1rem; max-width: 500px; margin: 0 auto; padding-bottom: 4rem; }
+        
+        .day-card { 
+            display: none;
+            background: var(--card); 
+            border-radius: 16px; 
+            padding: 1.25rem; 
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .day-title { 
+            font-size: 1.3rem; 
+            font-weight: 800; 
+            color: var(--primary); 
+            margin-bottom: 1.25rem; 
+            border-bottom: 2px solid #e5e7eb; 
+            padding-bottom: 0.75rem; 
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .event { 
+            display: flex; 
+            gap: 1rem; 
+            margin-bottom: 1.25rem; 
+            border-bottom: 1px solid #f3f4f6; 
+            padding-bottom: 1.25rem; 
+        }
+        .event:last-child { margin-bottom: 0; border-bottom: none; padding-bottom: 0; }
+        
+        .time { 
+            font-weight: 800; 
+            font-size: 1.15rem; 
+            color: var(--primary); 
+            min-width: 65px; 
+            flex-shrink: 0; 
+            padding-top: 2px;
+        }
+        
+        .details { flex-grow: 1; }
+        .desc { font-size: 1.1rem; margin: 0; color: var(--text-dark); }
+        .sub-text { font-size: 0.95rem; color: var(--text-light); margin-top: 4px; display: block; }
+        
+        .badge { 
+            display: inline-block; 
+            background-color: #fee2e2; 
+            color: #b91c1c; 
+            font-size: 0.8rem; 
+            font-weight: 700; 
+            padding: 4px 8px; 
+            border-radius: 6px; 
+            margin-top: 6px; 
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .pub-list { margin: 10px 0 0 0; padding-left: 20px; font-size: 1rem; color: var(--text-light); }
+        .pub-list li { margin-bottom: 6px; }
+        
+        .map-image {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            margin-top: 15px;
+            border: 2px solid #e5e7eb;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .note { 
+            font-size: 0.9rem; 
+            color: #374151; 
+            background: #e5e7eb; 
+            padding: 1rem; 
+            border-radius: 12px; 
+            border-left: 4px solid var(--primary);
+            margin-top: 1.5rem;
+            display: none;
+        }
+        a { color: var(--primary); text-decoration: none; font-weight: 600; }
+        
+        .swipe-hint {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #9ca3af;
+            margin-top: 1rem;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-title">
+            <h1>☘️ Belfast 2026</h1>
+        </div>
+        <div class="tabs" id="tab-container">
+            <button class="tab" id="tab0" onclick="showDay(0)">Mið 28.</button>
+            <button class="tab" id="tab1" onclick="showDay(1)">Fim 29.</button>
+            <button class="tab" id="tab2" onclick="showDay(2)">Fös 30.</button>
+            <button class="tab" id="tab3" onclick="showDay(3)">Lau 31.</button>
+            <button class="tab" id="tab4" onclick="showDay(4)">Sun 1.</button>
+            <button class="tab" id="tab5" onclick="showDay(5)">Mán 2.</button>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <!-- MIÐVIKUDAGUR -->
+        <div class="day-card" id="day0">
+            <div class="day-title">🗓️ Miðvikudagur 28. okt</div>
+            <div class="event">
+                <div class="time">07:40</div>
+                <div class="details">
+                    <p class="desc">✈️ Flug til Dublin</p>
+                    <span class="badge">Pantað</span>
+                </div>
+            </div>
+            <div class="event">
+                <div class="time">10:15</div>
+                <div class="details"><p class="desc">Lending í Dublin (ca.)</p></div>
+            </div>
+            <div class="event">
+                <div class="time">10:50</div>
+                <div class="details">
+                    <p class="desc">🚌 Rúta: Dublin ➔ Belfast</p>
+                    <span class="badge">Pantað</span>
+                </div>
+            </div>
+            <div class="event">
+                <div class="time">12:30</div>
+                <div class="details">
+                    <p class="desc">🏨 Komin til Belfast</p>
+                    <span class="sub-text">Kíkja á hótel og geyma farangur. Innritun kl 15:00.</span>
+                </div>
+            </div>
+            <div class="event">
+                <div class="time">Eftir</div>
+                <div class="details">
+                    <p class="desc">🍔 Hádegismatur & Guinness</p>
+                    <span class="sub-text">Góður tími til að versla búninga á <a href="https://www.elliottsfancydress.co.uk" target="_blank">elliottsfancydress.co.uk</a>.</span>
+                </div>
+            </div>
+            <div class="event">
+                <div class="time">18:00</div>
+                <div class="details">
+                    <p class="desc">⛪ Messa í St. Malachy's Church</p>
+                    <span class="sub-text">Greidd atkvæði á fyrsta pöbb hvort farið verði.</span>
+                </div>
+            </div>
+            <div class="event">
+                <div class="time">Kvöld</div>
+                <div class="details"><p class="desc">🍻 Pöbbarölt?</p></div>
+            </div>
+        </div>
+
+        <!-- FIMMTUDAGUR -->
+        <div class="day-card" id="day1">
+            <div class="day-title">⛳ Fimmtudagur 29. okt</div>
+            <div class="event">
+                <div class="time">12:30</div>
+                <div class="details">
+                    <p class="desc">🍔 Hádegismatur</p>
+                    <span class="sub-text">Hellcat Maggies, rétt við hótelið hans Óðins.</span>
+                </div>
+            </div>
+            <div class="event">
+                <div class="time">13:30</div>
+                <div class="details">
+                    <p class="desc">🍺 <strong>PUB GOLF HEFST!</strong></p>
+                    <span class="sub-text">Fyrsta holan er 5 mín labb frá Hellcat Maggies:</span>
+                    <ol class="pub-list">
+                        <li>The Garrick</li>
+                        <li>Maddens</li>
+                        <li>Kelly's Cellar</li>
+                        <li>White Tavern</li>
+                        <li>The John Hewitt</li>
+                        <li>Duke of York</li>
+                        <li>The Spaniard</li>
+                        <li>Harp bar</li>
+                        <li>The Dirty Onion & Yardbird</li>
+                        <li>Hótel?</li>
+                    </ol>
+                    <img src="kort.jpg" alt="Kort af Pub Golf leiðinni" class="map-image">
+                    <span class="sub-text" style="display: block; margin-top: 8px;"><em>Rauð lína = Golfholur. Græn lína = Heimleið. Ekki má nota golfbíl.</em></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- FÖSTUDAGUR -->
+        <div class="day-card" id="day2">
+            <div class="day-title">🚲 Föstudagur 30. okt</div>
+            <div class="event">
+                <div class="time">12:18</div>
+                <div class="details">
+                    <p class="desc">🏆 Úrslit Pubgolfs (til 13:30)</p>
+                    <span class="sub-text">Mæta á Fibber Magee. Upphitun og mat.</span>
+                </div>
+            </div>
+            <div class="event">
+                <div class="time">15:27</div>
+                <div class="details"><p class="desc">🛒 Tesco Express</p><span class="sub-text">Kaupa áfengi fyrir bjórhjólið.</span></div>
+            </div>
+            <div class="event">
+                <div class="time">15:45</div>
+                <div class="details">
+                    <p class="desc">🚲 <strong>BJÓRHJÓL!</strong> (Wee Toast Tours)</p>
+                    <span class="sub-text">Til kl 17:00.</span>
+                    <span class="badge">Pantað</span>
+                </div>
+            </div>
+            <div class="event">
+                <div class="time">18:00</div>
+                <div class="details">
+                    <p class="desc">🥩 Kvöldmatur: The Morning Star</p>
+                    <span class="badge">Pantað</span>
+                </div>
+            </div>
+            <div class="event">
+                <div class="time">20:00</div>
+                <div class="details">
+                    <p class="desc">🍻 Points Belfast</p>
+                    <span class="sub-text">Stopp á The Bridge House á leiðinni ef vill.</span>
+                </div>
+            </div>
+            <div class="event">
+                <div class="time">21:00</div>
+                <div class="details"><p class="desc">🎶 Annar pub? (Metum stemningu til 01:00)</p></div>
+            </div>
+        </div>
+
+        <!-- LAUGARDAGUR -->
+        <div class="day-card" id="day3">
+            <div class="day-title">🎭 Laugardagur 31. okt</div>
+            <div class="event">
+                <div class="time">12:45</div>
+                <div class="details"><p class="desc">🍔 Hádegismatur: Haymarket</p></div>
+            </div>
+            <div class="event">
+                <div class="time">14:15</div>
+                <div class="details">
+                    <p class="desc">🧩 Escape Room: Time Escape</p>
+                    <span class="badge">Pantað</span>
+                </div>
+            </div>
+            <div class="event">
+                <div class="time">15:30</div>
+                <div class="details"><p class="desc">🍺 Einn kaldur?</p></div>
+            </div>
+            <div class="event">
+                <div class="time">16:00</div>
+                <div class="details">
+                    <p class="desc">🧛‍♂️ <strong>ALLIR Í BÚNINGA!</strong></p>
+                    <span class="sub-text">Hittumst á hóteli Óðins. Drykkir kl 16:30.</span>
+                </div>
+            </div>
+            <div class="event">
+                <div class="time">18:30</div>
+                <div class="details">
+                    <p class="desc">🍽️ Kvöldmatur: Granny Annies</p>
+                    <span class="badge">Pantað</span>
+                </div>
+            </div>
+            <div class="event">
+                <div class="time">20:30</div>
+                <div class="details"><p class="desc">🎉 Finnum sprell í miðbænum!</p></div>
+            </div>
+        </div>
+
+        <!-- SUNNUDAGUR -->
+        <div class="day-card" id="day4">
+            <div class="day-title">🛋️ Sunnudagur 1. nóv</div>
+            <div class="event">
+                <div class="time">Allur<br>dagur</div>
+                <div class="details">
+                    <p class="desc">Hvíldardagur</p>
+                    <span class="sub-text">Ekkert plan. Hægt að kíkja í hádegismat og pílu á Haymarket. St. Georges market skemmtilegur, opinn 10-15.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- MÁNUDAGUR -->
+        <div class="day-card" id="day5">
+            <div class="day-title">✈️ Mánudagur 2. nóv</div>
+            <div class="event">
+                <div class="time">07:00</div>
+                <div class="details">
+                    <p class="desc">🚌 Rúta frá Belfast Grand Central</p>
+                    <span class="badge">Pantað</span>
+                </div>
+            </div>
+            <div class="event">
+                <div class="time">11:30</div>
+                <div class="details">
+                    <p class="desc">✈️ Flug heim</p>
+                    <span class="badge">Pantað</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="note" id="disclaimer">
+            <strong>ATH!</strong> Pantaðir viðburðir - ekki hægt að breyta tímasetningu. Allar aðrar tímasetningar fara eftir veðri, vindum, þynnku, þorsta, stemmningu, áfengisprósentu í blóði, hungri og nennu.
+        </div>
+        
+        <div class="swipe-hint">← Strjúktu til að skipta um dag →</div>
+
+    </div>
+
+    <script>
+        const totalDays = 6;
+        let currentDayIndex = 0;
+
+        function showDay(index) {
+            for (let i = 0; i < totalDays; i++) {
+                document.getElementById('day' + i).style.display = 'none';
+                document.getElementById('tab' + i).classList.remove('active');
+            }
+            
+            document.getElementById('day' + index).style.display = 'block';
+            document.getElementById('tab' + index).classList.add('active');
+            
+            document.getElementById('disclaimer').style.display = 'block';
+            
+            currentDayIndex = index;
+            
+            const tab = document.getElementById('tab' + index);
+            tab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            
+            window.scrollTo(0, 0);
+        }
+
+        showDay(0);
+
+        let touchstartX = 0;
+        let touchendX = 0;
+
+        function checkSwipe() {
+            if (touchendX < touchstartX - 40) {
+                if (currentDayIndex < totalDays - 1) showDay(currentDayIndex + 1);
+            }
+            if (touchendX > touchstartX + 40) {
+                if (currentDayIndex > 0) showDay(currentDayIndex - 1);
+            }
+        }
+
+        document.addEventListener('touchstart', e => {
+            touchstartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', e => {
+            touchendX = e.changedTouches[0].screenX;
+            checkSwipe();
+        });
+    </script>
+</body>
+</html>
