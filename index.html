@@ -81,6 +81,26 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* Hönnun fyrir Niðurtalningu */
+        .countdown-box {
+            background: linear-gradient(135deg, #15803d, #16a34a);
+            color: white;
+            border-radius: 12px;
+            padding: 2rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(21, 128, 61, 0.3);
+            margin-bottom: 1rem;
+        }
+        .countdown-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 1rem; opacity: 0.95; }
+        .countdown-numbers { 
+            display: flex; 
+            justify-content: center; 
+            gap: 15px; 
+        }
+        .time-block { display: flex; flex-direction: column; align-items: center; }
+        .time-val { font-size: 2.2rem; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1; }
+        .time-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; margin-top: 5px; font-weight: 600; }
+
         .day-title { 
             font-size: 1.3rem; 
             font-weight: 800; 
@@ -154,9 +174,9 @@
         
         .swipe-hint {
             text-align: center;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: #9ca3af;
-            margin-top: 1rem;
+            margin-top: 1.5rem;
             font-style: italic;
         }
     </style>
@@ -167,19 +187,52 @@
             <h1>☘️ Belfast 2026</h1>
         </div>
         <div class="tabs" id="tab-container">
-            <button class="tab" id="tab0" onclick="showDay(0)">Mið 28.</button>
-            <button class="tab" id="tab1" onclick="showDay(1)">Fim 29.</button>
-            <button class="tab" id="tab2" onclick="showDay(2)">Fös 30.</button>
-            <button class="tab" id="tab3" onclick="showDay(3)">Lau 31.</button>
-            <button class="tab" id="tab4" onclick="showDay(4)">Sun 1.</button>
-            <button class="tab" id="tab5" onclick="showDay(5)">Mán 2.</button>
+            <button class="tab" id="tab0" onclick="showDay(0)">Forsíða</button>
+            <button class="tab" id="tab1" onclick="showDay(1)">Mið 28.</button>
+            <button class="tab" id="tab2" onclick="showDay(2)">Fim 29.</button>
+            <button class="tab" id="tab3" onclick="showDay(3)">Fös 30.</button>
+            <button class="tab" id="tab4" onclick="showDay(4)">Lau 31.</button>
+            <button class="tab" id="tab5" onclick="showDay(5)">Sun 1.</button>
+            <button class="tab" id="tab6" onclick="showDay(6)">Mán 2.</button>
         </div>
     </header>
 
     <div class="container">
         
-        <!-- MIÐVIKUDAGUR -->
+        <!-- FORSÍÐA -->
         <div class="day-card" id="day0">
+            <div class="countdown-box">
+                <div class="countdown-title">🛫 Brottför til Dublin</div>
+                <div class="countdown-numbers">
+                    <div class="time-block">
+                        <span class="time-val" id="cd-days">00</span>
+                        <span class="time-label">Dagar</span>
+                    </div>
+                    <div class="time-block"><span class="time-val">:</span><span class="time-label">&nbsp;</span></div>
+                    <div class="time-block">
+                        <span class="time-val" id="cd-hours">00</span>
+                        <span class="time-label">Klst</span>
+                    </div>
+                    <div class="time-block"><span class="time-val">:</span><span class="time-label">&nbsp;</span></div>
+                    <div class="time-block">
+                        <span class="time-val" id="cd-mins">00</span>
+                        <span class="time-label">Mín</span>
+                    </div>
+                    <div class="time-block"><span class="time-val">:</span><span class="time-label">&nbsp;</span></div>
+                    <div class="time-block">
+                        <span class="time-val" id="cd-secs">00</span>
+                        <span class="time-label">Sek</span>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 1.5rem; color: #4b5563;">
+                <p><strong>Velkomin í ferðaplanið!</strong></p>
+                <p>Hér geturðu flett á milli daga til að sjá dagskrána, pöbbalistann og allar mikilvægar tímasetningar.</p>
+            </div>
+        </div>
+
+        <!-- MIÐVIKUDAGUR -->
+        <div class="day-card" id="day1">
             <div class="day-title">🗓️ Miðvikudagur 28. okt</div>
             <div class="event">
                 <div class="time">07:40</div>
@@ -227,7 +280,7 @@
         </div>
 
         <!-- FIMMTUDAGUR -->
-        <div class="day-card" id="day1">
+        <div class="day-card" id="day2">
             <div class="day-title">⛳ Fimmtudagur 29. okt</div>
             <div class="event">
                 <div class="time">12:30</div>
@@ -260,7 +313,7 @@
         </div>
 
         <!-- FÖSTUDAGUR -->
-        <div class="day-card" id="day2">
+        <div class="day-card" id="day3">
             <div class="day-title">🚲 Föstudagur 30. okt</div>
             <div class="event">
                 <div class="time">12:18</div>
@@ -302,7 +355,7 @@
         </div>
 
         <!-- LAUGARDAGUR -->
-        <div class="day-card" id="day3">
+        <div class="day-card" id="day4">
             <div class="day-title">🎭 Laugardagur 31. okt</div>
             <div class="event">
                 <div class="time">12:45</div>
@@ -329,7 +382,7 @@
             <div class="event">
                 <div class="time">18:30</div>
                 <div class="details">
-                    <p class="desc">🍽️ Kvöldmatur: Granny Annies</p>
+                    <p class="desc">🍽️️ Kvöldmatur: Granny Annies</p>
                     <span class="badge">Pantað</span>
                 </div>
             </div>
@@ -340,7 +393,7 @@
         </div>
 
         <!-- SUNNUDAGUR -->
-        <div class="day-card" id="day4">
+        <div class="day-card" id="day5">
             <div class="day-title">🛋️ Sunnudagur 1. nóv</div>
             <div class="event">
                 <div class="time">Allur<br>dagur</div>
@@ -352,7 +405,7 @@
         </div>
 
         <!-- MÁNUDAGUR -->
-        <div class="day-card" id="day5">
+        <div class="day-card" id="day6">
             <div class="day-title">✈️ Mánudagur 2. nóv</div>
             <div class="event">
                 <div class="time">07:00</div>
@@ -374,16 +427,16 @@
             <strong>ATH!</strong> Pantaðir viðburðir - ekki hægt að breyta tímasetningu. Allar aðrar tímasetningar fara eftir veðri, vindum, þynnku, þorsta, stemmningu, áfengisprósentu í blóði, hungri og nennu.
         </div>
         
-        <div class="swipe-hint">← Strjúktu til að skipta um dag →</div>
+        <div class="swipe-hint">← Strjúktu til að skipta um flipa →</div>
 
     </div>
 
     <script>
-        const totalDays = 6;
+        const totalTabs = 7;
         let currentDayIndex = 0;
 
         function showDay(index) {
-            for (let i = 0; i < totalDays; i++) {
+            for (let i = 0; i < totalTabs; i++) {
                 document.getElementById('day' + i).style.display = 'none';
                 document.getElementById('tab' + i).classList.remove('active');
             }
@@ -391,24 +444,29 @@
             document.getElementById('day' + index).style.display = 'block';
             document.getElementById('tab' + index).classList.add('active');
             
-            document.getElementById('disclaimer').style.display = 'block';
+            // Fela ATH textann á forsíðunni
+            if(index === 0) {
+                document.getElementById('disclaimer').style.display = 'none';
+            } else {
+                document.getElementById('disclaimer').style.display = 'block';
+            }
             
             currentDayIndex = index;
             
             const tab = document.getElementById('tab' + index);
             tab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-            
             window.scrollTo(0, 0);
         }
 
-        showDay(0);
+        showDay(0); // Byrja á Forsíðu
 
+        // Strjúk (swipe) virkni
         let touchstartX = 0;
         let touchendX = 0;
 
         function checkSwipe() {
             if (touchendX < touchstartX - 40) {
-                if (currentDayIndex < totalDays - 1) showDay(currentDayIndex + 1);
+                if (currentDayIndex < totalTabs - 1) showDay(currentDayIndex + 1);
             }
             if (touchendX > touchstartX + 40) {
                 if (currentDayIndex > 0) showDay(currentDayIndex - 1);
@@ -423,6 +481,35 @@
             touchendX = e.changedTouches[0].screenX;
             checkSwipe();
         });
+
+        // Niðurtalning (Countdown)
+        const flightDate = new Date("2026-10-28T07:40:00").getTime();
+
+        const countdownFunction = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = flightDate - now;
+
+            if (distance < 0) {
+                clearInterval(countdownFunction);
+                document.getElementById("cd-days").innerText = "00";
+                document.getElementById("cd-hours").innerText = "00";
+                document.getElementById("cd-mins").innerText = "00";
+                document.getElementById("cd-secs").innerText = "00";
+                document.querySelector(".countdown-title").innerText = "🍻 Við erum farnir!";
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Bæta við 0 fyrir framan tölur undir 10
+            document.getElementById("cd-days").innerText = days.toString().padStart(2, '0');
+            document.getElementById("cd-hours").innerText = hours.toString().padStart(2, '0');
+            document.getElementById("cd-mins").innerText = minutes.toString().padStart(2, '0');
+            document.getElementById("cd-secs").innerText = seconds.toString().padStart(2, '0');
+        }, 1000);
     </script>
 </body>
 </html>
